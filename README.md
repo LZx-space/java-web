@@ -1,3 +1,4 @@
 # java-web
-## require
+A practice-oriented web project
+### run requires
 JDK11

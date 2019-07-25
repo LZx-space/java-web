@@ -13,7 +13,7 @@ public interface Repository<I, Root extends AggregateRoot<I, Root>> {
     /**
      * 插入一个聚合根
      *
-     * @param root 聚合根
+     * @param root 聚合根对象
      * @return
      */
     int insert(Root root);
@@ -21,7 +21,7 @@ public interface Repository<I, Root extends AggregateRoot<I, Root>> {
     /**
      * 删除一个聚合根
      *
-     * @param id
+     * @param id 实体标识
      * @return
      */
     int delete(I id);
@@ -29,7 +29,7 @@ public interface Repository<I, Root extends AggregateRoot<I, Root>> {
     /**
      * 更新一个聚合根
      *
-     * @param root
+     * @param root 聚合根对象
      * @return
      */
     int update(Root root);
@@ -37,7 +37,7 @@ public interface Repository<I, Root extends AggregateRoot<I, Root>> {
     /**
      * 获取一个聚合根
      *
-     * @param id
+     * @param id 实体标识
      * @return
      */
     Root getById(I id);
