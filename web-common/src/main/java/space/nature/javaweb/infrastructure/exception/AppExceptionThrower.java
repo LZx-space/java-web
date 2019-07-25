@@ -4,12 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
-public class AppExceptionThrower {
+public abstract class AppExceptionThrower {
 
     /**
      * 抛出运行时异常，<p style="color:red;">业务领域内通常使用这个</p>
      *
-     * @param message    异常信息接口类型的实现类的对象
+     * @param message 异常信息接口类型的实现类的对象
      */
     public static void runtimeException(ExceptionMessage message) {
         runtimeException(message, null);
@@ -29,11 +29,11 @@ public class AppExceptionThrower {
     /**
      * 抛出受检查异常
      *
-     * @param message    异常信息接口类型的实现类的对象
+     * @param message 异常信息接口类型的实现类的对象
      * @throws AppCheckedException
      */
     public static void checkedException(ExceptionMessage message) throws AppCheckedException {
-       checkedException(message, null);
+        checkedException(message, null);
     }
 
     /**
