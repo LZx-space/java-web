@@ -33,6 +33,12 @@
             <artifactId>jsch</artifactId>
             <version>0.1.55</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- log4j + slf4j
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

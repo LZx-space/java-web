@@ -37,8 +37,8 @@ public abstract class IdNumValidator {
      * @return 是则true反之false
      */
     public static boolean isIdCardNum(String idCardNum) {
-        if (StringUtils.isEmpty(idCardNum)) {
-            throw new RuntimeException("身份证号码不能为空");
+        if (StringUtils.isBlank(idCardNum)) {
+            throw new IllegalArgumentException("身份证号码不能为空");
         }
         int len = idCardNum.length();
         if (len == 18) {
