@@ -30,4 +30,24 @@ public class CommonResponse {
         this.message = message.getMessage();
         this.data = data;
     }
+
+    /**
+     * @param code
+     * @param message
+     */
+    public CommonResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    /**
+     * @param code
+     * @param message
+     * @param data
+     */
+    public CommonResponse(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
 }

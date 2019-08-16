@@ -4,7 +4,18 @@
 
 package space.nature.web.domain.user;
 
-public abstract class UserFactory {
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserFactory {
+
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 创建用户
@@ -13,8 +24,9 @@ public abstract class UserFactory {
      * @param password 用户设置的密码
      * @return
      */
-    public static User create(String loginId, String password) {
+    public User create(String loginId, String password) {
         User.UserBuilder builder = User.builder();
+        builder.username(loginId);
         if (isMobileNo(loginId)) {
             builder.mobileNo(loginId);
         } else if (isEmail(loginId)) {
@@ -22,7 +34,7 @@ public abstract class UserFactory {
         } else {
             throw new RuntimeException("");
         }
-        return builder.password(password).build();
+        return builder.password(passwordEncoder.encode(password)).build();
     }
 
     /**
@@ -31,8 +43,8 @@ public abstract class UserFactory {
      * @param loginId
      * @return
      */
-    private static boolean isMobileNo(String loginId) {
-        return true;
+    private boolean isMobileNo(String loginId) {
+        return StringUtils.isNumeric(loginId);
     }
 
     /**
@@ -41,7 +53,7 @@ public abstract class UserFactory {
      * @param loginId
      * @return
      */
-    private static boolean isEmail(String loginId) {
+    private boolean isEmail(String loginId) {
         return true;
     }
 

@@ -6,6 +6,7 @@ package space.nature.util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -21,7 +22,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 同步处理的HTTP客户端
+ * 请使用JDK9系统自带的{@link java.net.http.HttpClient}
  */
+@Deprecated
 public abstract class HttpClient {
 
     private static final CloseableHttpClient CLIENT;
@@ -29,13 +32,13 @@ public abstract class HttpClient {
     private static final int MAX_CONNECTION_PER_ROUTE = 800;
 
     // 套接字发送和返回/修改数据的最大时间差
-    private static final int SOCKET_TIMEOUT = 1;
+    private static final int SOCKET_TIMEOUT = 5000;
 
     // 建立连接的超时时间
-    private static final int CONNECT_TIMEOUT = 1;
+    private static final int CONNECT_TIMEOUT = 5000;
 
     // 从连接池获取连接的超时时间
-    private static final int CONNECTION_REQUEST_TIMEOUT = 1;
+    private static final int CONNECTION_REQUEST_TIMEOUT = 5000;
 
     static {
         CLIENT = HttpClients.custom()
@@ -73,6 +76,11 @@ public abstract class HttpClient {
                  * 性能，是否生效取决于服务端和请求头，如服务端不支持HTTP/1.1将出现异常
                  */
                 .setExpectContinueEnabled(true).build();
+    }
+
+    public static String get(String uri) throws IOException {
+        HttpGet httpGet = new HttpGet(uri);
+        return CLIENT.execute(httpGet, new BasicResponseHandler());
     }
 
     /**

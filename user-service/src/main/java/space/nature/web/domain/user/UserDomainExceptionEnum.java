@@ -7,7 +7,7 @@ package space.nature.web.domain.user;
 
 import space.nature.core.ResponseMessage;
 
-public enum DomainExceptionEnum implements ResponseMessage {
+public enum UserDomainExceptionEnum implements ResponseMessage {
 
     LOGIN_ID_REGISTERED(100, "该ID已注册");
 
@@ -15,7 +15,7 @@ public enum DomainExceptionEnum implements ResponseMessage {
 
     private String message;
 
-    DomainExceptionEnum(int code, String message) {
+    UserDomainExceptionEnum(int code, String message) {
         this.code = code;
         this.message = message;
     }

@@ -4,7 +4,9 @@
 
 package space.nature.web.application;
 
-public interface UserService {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface UserService extends UserDetailsService {
 
     /**
      * 注册用户

@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /user
+  session:
+    persistent: false
+spring:
+  application:
+    name: user
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/java-web?serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        security: info
+      mybatis: warn
+mybatis:
+  type-aliases-package: space.nature.web.domain
+  mapper-locations: classpath:mappers/*.xml
+jwt:
+  token:
+    timeout: 1

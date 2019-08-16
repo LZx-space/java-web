@@ -4,19 +4,21 @@
 
 package space.nature.web.domain.user;
 
+import org.apache.ibatis.annotations.Mapper;
 import space.nature.core.domain.Repository;
 
 /**
  * 用户持久层数据接入接口
  */
+@Mapper
 public interface UserRepository extends Repository<User, Long> {
 
     /**
-     * 查询用户
+     * 根据用户名查询用户
      *
-     * @param loginId 登录用ID，可以是手机号码和邮箱
+     * @param username
      * @return
      */
-    User getByLoginId(String loginId);
+    User findByUsername(String username);
 
 }
