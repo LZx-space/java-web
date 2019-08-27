@@ -5,6 +5,7 @@
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import space.nature.util.HttpClient;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -22,5 +23,7 @@ public class Test {
             System.out.println(System.currentTimeMillis() - start);
         }
         Jackson2ObjectMapperBuilder.json().build().writeValueAsString(null);
+        File file = new File("D:/test");
+        file.listFiles();
     }
 }

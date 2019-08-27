@@ -2,34 +2,37 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.web.infrastructure.config.security;
+package space.nature.spring.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
 import space.nature.util.JwtUtils;
-import space.nature.web.domain.user.User;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 /**
  * JWT Token
  */
-@Component
+@Getter
 public class JwtTokenHandler {
 
-    @Value("${jwt.token.timeout:30}")
     private int tokenTimeout;
+
+    public JwtTokenHandler(int tokenTimeout) {
+        this.tokenTimeout = tokenTimeout;
+    }
 
     /**
      * 创建Token
@@ -38,12 +41,12 @@ public class JwtTokenHandler {
      * @return
      */
     public String create(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date exp = Date.from(now.toInstant().plus(tokenTimeout, MINUTES));
-        List<String> roles = user.getAuthorities().parallelStream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        String roles = userDetails.getAuthorities().parallelStream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
         return Jwts.builder()
-                .setAudience(user.getUsername())
+                .setAudience(userDetails.getUsername())
                 .setIssuer("web-user")
                 .setIssuedAt(now)
                 .setExpiration(exp)
@@ -60,7 +63,7 @@ public class JwtTokenHandler {
      */
     public Authentication parse(String token) {
         Claims claims = JwtUtils.parse(token);
-        List<SimpleGrantedAuthority> roles = ((List<String>) claims.get("role")).stream().map(e -> new SimpleGrantedAuthority(e)).collect(Collectors.toList());
+        List<SimpleGrantedAuthority> roles = Stream.of(((String) claims.get("role")).split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(claims.getAudience(), null, roles);
     }
 

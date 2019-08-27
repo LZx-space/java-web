@@ -4,6 +4,7 @@
 
 package space.nature.core.domain;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,7 +54,7 @@ public interface Repository<Root extends AggregateRoot<Root, ID>, ID> {
      *
      * @return
      */
-    Iterable<Root> findAll();
+    List<Root> findAll();
 
     /**
      * 查找该聚合根的某些指定ID的实例
@@ -61,6 +62,6 @@ public interface Repository<Root extends AggregateRoot<Root, ID>, ID> {
      * @param ids ID的Iterate对象
      * @return
      */
-    Iterable<Root> findAllById(Iterable<ID> ids);
+    List<Root> findAllById(Iterable<ID> ids);
 
 }

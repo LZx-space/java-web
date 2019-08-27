@@ -4,6 +4,8 @@
 
 package space.nature.core.responseobj;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Getter;
 import space.nature.core.ResponseMessage;
 
@@ -17,13 +19,14 @@ public class CommonResponse {
 
     private String message;
 
+    @JsonInclude(Include.NON_NULL)
     private Object data;
 
     /**
      * 创建响应对象
      *
-     * @param message
-     * @param data
+     * @param message 响应基本信息
+     * @param data    响应数据
      */
     public CommonResponse(ResponseMessage message, Object data) {
         this.code = message.getCode();
@@ -32,8 +35,10 @@ public class CommonResponse {
     }
 
     /**
-     * @param code
-     * @param message
+     * 创建响应对象
+     *
+     * @param code    返回码
+     * @param message 返回信息
      */
     public CommonResponse(int code, String message) {
         this.code = code;
@@ -41,9 +46,11 @@ public class CommonResponse {
     }
 
     /**
-     * @param code
-     * @param message
-     * @param data
+     * 创建响应对象
+     *
+     * @param code    返回码
+     * @param message 返回信息
+     * @param data    返回数据
      */
     public CommonResponse(int code, String message, Object data) {
         this.code = code;

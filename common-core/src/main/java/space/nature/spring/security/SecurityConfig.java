@@ -2,10 +2,12 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.web.infrastructure.config.security;
+package space.nature.spring.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,24 +16,25 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import space.nature.web.application.UserService;
 
 @Configuration
 @EnableWebSecurity
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
+    private final JwtTokenHandler tokenHandler;
+
+    public SecurityConfig(@Value("${jwt.token.timeout:30}") int tokenTimeout) {
+        tokenHandler = new JwtTokenHandler(tokenTimeout);
+    }
 
     @Autowired
-    @Qualifier("CORSConfigurationSource")
-    private CorsConfigurationSource corsConfigurationSource;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,14 +47,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.eraseCredentials(true).userDetailsService(userService).passwordEncoder(passwordEncoder);
+        auth.eraseCredentials(true).userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /*
          * 前后端分离下CSRF分析：
-         * 1.用户能跨站攻击则知道用户的seesionId，则能知道其他请求信息，如cookie、页面里的显示的CSRFToken
+         * 1.用户能跨站攻击则知道用户的sessionId，则能知道其他请求信息，如cookie、页面里的显示的CSRFToken
          * 2.传统的后端渲染页面每次请求后重新渲染页面能保证CSRFToken更新，大大减小被攻击的可能
          * 3.异步的修改状态类的HTTP请求，不能随意更新CSRFToken，此举会出现并发问题
          * 4.即便用户将CSRFToken放在内存中，但是请求的时候依然会通过Header或者parameters传输而遭到泄露
@@ -60,7 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          *
          */
         http.csrf().ignoringAntMatchers(new String[]{"/**"})
-                .and().cors().configurationSource(corsConfigurationSource)
                 .and().exceptionHandling()
                 .accessDeniedHandler(new AjaxAccessDeniedHandler())
                 .authenticationEntryPoint(new AjaxAuthenticationEntryPoint())
@@ -77,7 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(successHandler)
                 .failureHandler(new AjaxAuthenticationFailureHandler())
                 .and().logout().logoutSuccessHandler(new AjaxLogoutSuccessHandler())
-                .deleteCookies(JwtTokenConstants.COOKIE_TOKEN_NAME)
                 .addLogoutHandler(new ExtraLogoutHandler())
                 .and().rememberMe().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -89,15 +90,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().regexMatchers("^(.*\\.[A-Za-z]+)$");
     }
 
-    @Bean("CORSConfigurationSource")
-    public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        return source;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new AjaxAuthenticationSuccessHandler(tokenHandler);
+    }
+
+    @Bean
+    SecurityContextRepository contextRepository() {
+        return new JwtSecurityContextRepository(tokenHandler);
     }
 
 }

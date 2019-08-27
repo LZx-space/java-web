@@ -2,7 +2,7 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.web.infrastructure.config.security;
+package space.nature.spring.security;
 
 import org.springframework.http.HttpHeaders;
 

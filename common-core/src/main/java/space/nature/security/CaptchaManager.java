@@ -4,6 +4,9 @@
 
 package space.nature.security;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CaptchaManager {
 
 }

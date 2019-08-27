@@ -17,7 +17,9 @@ public enum CommonResponseCodeEnum implements ResponseMessage {
 
     SUCCESS(1, "成功"),
 
-    ERROR(2, "程序异常");
+    FAIL(2, "失败"),
+
+    ERROR(3, "程序异常");
 
     private int code;
 

@@ -2,36 +2,33 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.web.infrastructure.config.security;
+package space.nature.spring.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
 @Slf4j
 public class JwtSecurityContextRepository implements SecurityContextRepository {
 
-    private static final String TOKEN_HEADER_NAME = HttpHeaders.AUTHORIZATION;
+    private final JwtTokenHandler tokenHandler;
 
-    @Autowired
-    private JwtTokenHandler tokenHandler;
+    public JwtSecurityContextRepository(JwtTokenHandler tokenHandler) {
+        this.tokenHandler = tokenHandler;
+    }
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
-        log.info("加载上下文");
+        log.info("loadContext");
         HttpServletRequest request = requestResponseHolder.getRequest();
         String token = request.getHeader(JwtTokenConstants.HEADER_TOKEN_NAME);
         if (StringUtils.isEmpty(token)) {
@@ -40,6 +37,7 @@ public class JwtSecurityContextRepository implements SecurityContextRepository {
                 for (Cookie cookie : cookies) {
                     if (JwtTokenConstants.COOKIE_TOKEN_NAME.equals(cookie.getName())) {
                         token = cookie.getValue();
+                        break;
                     }
                 }
             }
@@ -54,17 +52,17 @@ public class JwtSecurityContextRepository implements SecurityContextRepository {
             securityContext.setAuthentication(authentication);
             return securityContext;
         } catch (ExpiredJwtException e) {
-            log.info("token 已过期");
+            log.info("token expired");
             return SecurityContextHolder.createEmptyContext();
         } catch (Exception e) {
-            log.info("解析token异常", e);
+            log.info("parse token exception", e);
             return SecurityContextHolder.createEmptyContext();
         }
     }
 
     @Override
     public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
-        log.info("保存上下文");
+        log.info("saveContext");
     }
 
     @Override

@@ -7,7 +7,6 @@ package space.nature.util;
 import java.io.*;
 import java.nio.file.FileSystemException;
 import java.util.Objects;
-import java.util.Stack;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -72,36 +71,34 @@ public abstract class ZipUtils {
             throw new IllegalArgumentException("压缩文件不是zip格式");
         }
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(des))) {
-            String srcFileName = src.getName();
+            String srcFilename = src.getName();
+            String srcAbsolutePath = src.getAbsolutePath();
             if (src.isDirectory()) {
-                String srcFileAbsolutePath = src.getAbsolutePath();
-                Stack<File> fileStack = new Stack<>();
-                findFiles(src, fileStack);
-                while (!fileStack.empty()) {
-                    File file = fileStack.pop();
-                    String entryName = srcFileName + file.getAbsolutePath().replace(srcFileAbsolutePath, "");
-                    putEntry(file, entryName, zos);
-                }
+                recursiveFindFileAndPutEntry(src, zos, srcFilename, srcAbsolutePath);
             } else {
-                putEntry(src, srcFileName, zos);
+                putEntry(src, srcFilename, zos);
             }
             zos.flush();
         }
     }
 
     /**
-     * 查询文件夹内的所有文件
+     * 递归查找文件并将其作为ZipOutputStream对象的Entry对象
      *
-     * @param dir       文件夹
-     * @param fileStack 存储文件的栈
+     * @param currentDir          当前文件夹
+     * @param zos                 目标ZIP文件的输出流
+     * @param srcFilename         原文件的文件名，用于指定entry的路径
+     * @param srcFileAbsolutePath 原文件的文件绝对路径，用于指定entry的路径
+     * @throws IOException
      */
-    private static void findFiles(File dir, Stack<File> fileStack) {
-        File[] files = dir.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                findFiles(file, fileStack);
+    private static void recursiveFindFileAndPutEntry(File currentDir, ZipOutputStream zos, String srcFilename, String srcFileAbsolutePath) throws IOException {
+        File[] files = currentDir.listFiles();
+        for (File currentFile : files) {
+            if (currentFile.isDirectory()) {
+                recursiveFindFileAndPutEntry(currentFile, zos, srcFilename, srcFileAbsolutePath);
             } else {
-                fileStack.push(file);
+                String entryName = srcFilename + currentFile.getAbsolutePath().replace(srcFileAbsolutePath, "");
+                putEntry(currentFile, entryName, zos);
             }
         }
     }

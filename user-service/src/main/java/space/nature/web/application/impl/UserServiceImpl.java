@@ -5,6 +5,7 @@
 package space.nature.web.application.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import space.nature.web.domain.user.User;
 import space.nature.web.domain.user.UserDomainExceptionEnum;
 import space.nature.web.domain.user.UserFactory;
 import space.nature.web.domain.user.UserRepository;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return new User();
+            return User.builder().build();
         }
         return user;
     }
@@ -41,5 +44,11 @@ public class UserServiceImpl implements UserService {
         }
         User newUser = userFactory.create(loginId, password);
         userRepository.insert(newUser);
+    }
+
+    @Cacheable(value = "users", key = "method")
+    @Override
+    public List<User> listAll() {
+        return userRepository.findAll();
     }
 }
