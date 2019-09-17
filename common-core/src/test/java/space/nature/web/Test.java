@@ -6,8 +6,8 @@ package space.nature.web;
 
 import com.jcraft.jsch.JSchException;
 import lombok.Data;
-import space.nature.util.JaxbUtils;
-import space.nature.util.ZipUtils;
+import space.nature.common.util.JaxbUtils;
+import space.nature.common.util.ZipUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAccessType;
