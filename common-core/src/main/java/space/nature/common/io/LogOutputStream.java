@@ -4,7 +4,8 @@
 
 package space.nature.common.io;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,10 +15,9 @@ import java.nio.ByteBuffer;
 /**
  * 日志输出流
  */
-@Slf4j
 public class LogOutputStream extends OutputStream {
 
-    private String logName;
+    private Logger log;
 
     private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -26,10 +26,10 @@ public class LogOutputStream extends OutputStream {
     /**
      * 创建一个日志输出流
      *
-     * @param logName 日志标记
+     * @param clazz 被日志的类型
      */
-    public LogOutputStream(String logName) {
-        this.logName = logName;
+    public LogOutputStream(Class<?> clazz) {
+        log = LoggerFactory.getLogger(clazz);
     }
 
     @Override
@@ -52,6 +52,6 @@ public class LogOutputStream extends OutputStream {
         buf.flip();
         outputStream.flush();
         outputStream.close();
-        log.error(logName + ": " + outputStream.toString());
+        log.error(outputStream.toString());
     }
 }

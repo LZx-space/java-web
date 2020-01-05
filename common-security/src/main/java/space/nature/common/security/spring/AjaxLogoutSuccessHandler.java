@@ -7,9 +7,9 @@ package space.nature.common.security.spring;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import space.nature.common.core.responseobj.CommonResponse;
-import space.nature.common.core.responseobj.CommonResponseCodeEnum;
-import space.nature.common.core.responseobj.CommonResponseFactory;
+import space.nature.common.core.dto.Response;
+import space.nature.common.core.dto.ResponseStatusEnum;
+import space.nature.common.core.dto.ResponseFactory;
 import space.nature.common.util.JsonUtils;
 
 import javax.servlet.ServletException;
@@ -26,9 +26,9 @@ public class AjaxLogoutSuccessHandler implements LogoutSuccessHandler {
         log.info("-->> log out success");
         String result;
         if (authentication == null || !authentication.isAuthenticated()) {
-            result = JsonUtils.fromObject(new CommonResponse(CommonResponseCodeEnum.FAIL.getCode(), "用户未登录"));
+            result = JsonUtils.write(new Response(ResponseStatusEnum.FAIL.getCode(), "用户未登录"));
         } else {
-            result = JsonUtils.fromObject(CommonResponseFactory.success());
+            result = JsonUtils.write(ResponseFactory.success());
         }
         try (PrintWriter writer = response.getWriter()) {
             writer.write(result);

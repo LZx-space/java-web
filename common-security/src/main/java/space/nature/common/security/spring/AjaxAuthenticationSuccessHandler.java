@@ -7,7 +7,7 @@ package space.nature.common.security.spring;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import space.nature.common.core.responseobj.CommonResponseFactory;
+import space.nature.common.core.dto.ResponseFactory;
 import space.nature.common.util.JsonUtils;
 
 import javax.servlet.ServletException;
@@ -41,7 +41,7 @@ public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHa
         response.addCookie(cookie);
 
         try (PrintWriter writer = response.getWriter()) {
-            String json = JsonUtils.fromObject(CommonResponseFactory.success());
+            String json = JsonUtils.write(ResponseFactory.success());
             writer.write(json);
             writer.flush();
         }

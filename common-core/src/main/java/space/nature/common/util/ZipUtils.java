@@ -4,7 +4,6 @@
 
 package space.nature.common.util;
 
-import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.nio.file.FileSystemException;
 import java.util.Objects;
@@ -93,7 +92,7 @@ public abstract class ZipUtils {
      * @throws IOException
      */
     private static void recursiveFindFileAndPutEntry(File currentDir, ZipOutputStream zos, String srcFilename, String srcFileAbsolutePath) throws IOException {
-        @NotNull File[] files = currentDir.listFiles();
+        File[] files = currentDir.listFiles();
         for (File currentFile : files) {
             if (currentFile.isDirectory()) {
                 recursiveFindFileAndPutEntry(currentFile, zos, srcFilename, srcFileAbsolutePath);

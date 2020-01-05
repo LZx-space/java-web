@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Vector;
 
 /**
@@ -38,16 +39,16 @@ public abstract class SftpUtils {
      *
      * @param session 会话
      * @param src     待上传文件
-     * @param remote  上传目的地文件夹
+     * @param remoteDir  上传目的地文件夹
      */
-    public static void uploadFile(Session session, String src, String remote) throws JSchException, SftpException {
+    public static void uploadFile(Session session, String src, String remoteDir) throws JSchException, SftpException {
         if (!session.isConnected()) {
             session.connect(DEFAULT_CONNECT_TIMEOUT_MS);
         }
         ChannelSftp channelSftp = channelSftp(session, DEFAULT_CONNECT_TIMEOUT_MS);
         channelSftp.setFilenameEncoding("UTF-8");
         try {
-            channelSftp.put(src, remote);
+            channelSftp.put(src, remoteDir);
         } finally {
             channelSftp.disconnect();
         }
