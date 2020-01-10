@@ -23,7 +23,8 @@ public final class AppRuntimeException extends RuntimeException implements Respo
      * @param code   异常码
      * @param reason 异常原因
      */
-    AppRuntimeException(int code, String reason) {
+    protected AppRuntimeException(int code, String reason) {
+        super(reason);
         this.code = code;
         this.reason = reason;
     }

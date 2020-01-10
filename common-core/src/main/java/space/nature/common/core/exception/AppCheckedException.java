@@ -23,7 +23,8 @@ public final class AppCheckedException extends Exception implements ResponseStat
      * @param code   异常码
      * @param reason 异常原因
      */
-    AppCheckedException(int code, String reason) {
+    protected AppCheckedException(int code, String reason) {
+        super(reason);
         this.code = code;
         this.reason = reason;
     }

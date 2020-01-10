@@ -10,16 +10,16 @@ package space.nature.common.core;
 public interface ResponseStatus {
 
     /**
-     * 获取错误码
+     * 获取返回码
      *
-     * @return 错误码
+     * @return 返回码
      */
     int getCode();
 
     /**
-     * 获取错误原因
+     * 获取返回原因
      *
-     * @return 错误原因
+     * @return 返回原因
      */
     String getReason();
 
