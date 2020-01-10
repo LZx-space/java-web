@@ -37,12 +37,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(String loginId, String password) {
-        User user = userRepository.findByUsername(loginId);
+    public void register(String username, String password) {
+        User user = userRepository.findByUsername(username);
         if (user != null) {
             AppExceptionThrower.runtimeException(UserDomainExceptionEnum.LOGIN_ID_REGISTERED);
         }
-        User newUser = userFactory.create(loginId, password);
+        User newUser = userFactory.create(username, password);
         userRepository.insert(newUser);
     }
 

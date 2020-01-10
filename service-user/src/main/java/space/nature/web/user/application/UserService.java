@@ -14,15 +14,15 @@ public interface UserService extends UserDetailsService {
     /**
      * 注册用户
      *
-     * @param loginId  登录ID，
+     * @param username 用户名，
      * @param password 密码
      */
-    void register(String loginId, String password);
+    void register(String username, String password);
 
     /**
      * 获取所有用户
      *
-     * @return
+     * @return 获取所有用户
      */
     List<User> listAll();
 
