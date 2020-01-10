@@ -5,7 +5,6 @@
 package space.nature.common.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,28 +17,25 @@ public class SmsManager {
 
     private ThreadLocalRandom random = ThreadLocalRandom.current();
 
-    private static final String SMS_CACHE_NAME = "SMS:cache";
+    private static final String SMS_CACHE_NAME_PRFIX = "SMS:cache:";
 
     private static final int CODE_CACHE_TTL = 2;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 发送短信验证码
      *
      * @param mobileNo 手机号
-     * @return
+     * @return 缓存message的key
      */
-    public String sendMessage(String mobileNo) {
+    public String sendCachedMessage(String mobileNo) {
         String storageKey = UUID.randomUUID().toString().replace("-", "");
         String code = createCode();
         // TODO Send Message Code
         String[] pair = {mobileNo, code};
-        redisTemplate.opsForValue().set(storageKey, pair, CODE_CACHE_TTL, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(SMS_CACHE_NAME_PRFIX + storageKey, pair, CODE_CACHE_TTL, TimeUnit.MINUTES);
         return storageKey;
     }
 
@@ -49,7 +45,7 @@ public class SmsManager {
      * @param storageKey 数据存储的key
      * @param mobileNo   手机号
      * @param submitCode 用户提交的code
-     * @return
+     * @return 验证结果
      */
     public ValidResult validCode(String storageKey, String mobileNo, String submitCode) {
         String[] pair = (String[]) redisTemplate.opsForValue().get(storageKey);
@@ -70,7 +66,7 @@ public class SmsManager {
     /**
      * 创建短信验证码
      *
-     * @return
+     * @return 生成短信验证码
      */
     private String createCode() {
         int start = random.nextInt(9);

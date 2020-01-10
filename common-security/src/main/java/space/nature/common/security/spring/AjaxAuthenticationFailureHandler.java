@@ -7,7 +7,7 @@ package space.nature.common.security.spring;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import space.nature.common.core.dto.Response;
+import space.nature.common.core.dto.ResponseFactory;
 import space.nature.common.core.dto.ResponseStatusEnum;
 import space.nature.common.util.JsonUtils;
 
@@ -27,7 +27,7 @@ public class AjaxAuthenticationFailureHandler implements AuthenticationFailureHa
         log.info("-->> authenticate failed through AJAX：{}", localizedMessage);
         // TODO if remove token
         try (PrintWriter writer = response.getWriter()) {
-            String json = JsonUtils.write(new Response(ResponseStatusEnum.FAIL.getCode(), localizedMessage));
+            String json = JsonUtils.write(ResponseFactory.create(ResponseStatusEnum.FAIL));
             writer.write(json);
             writer.flush();
         }
