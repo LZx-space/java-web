@@ -9,7 +9,7 @@
         <groupId>space.nature</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>web-user-service</artifactId>
+    <artifactId>service-user</artifactId>
     <dependencies>
         <dependency>
             <groupId>space.nature</groupId>

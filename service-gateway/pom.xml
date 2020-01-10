@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web-gateway-service</artifactId>
+    <artifactId>service-gateway</artifactId>
 
     <properties>
         <java.version>11</java.version>
