@@ -12,7 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import space.nature.common.util.JwtUtils;
+import org.springframework.validation.annotation.Validated;
+import space.nature.common.core.util.JwtUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,7 @@ public class JwtTokenHandler {
      * @param authentication 认证信息对象
      * @return
      */
-    public String create(Authentication authentication) {
+    public String create(@Validated Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date exp = Date.from(now.toInstant().plus(tokenTimeout, MINUTES));

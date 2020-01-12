@@ -2,7 +2,7 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.common.util;
+package space.nature.common.core.util;
 
 import com.jcraft.jsch.*;
 import lombok.Setter;
@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.Vector;
 
 /**

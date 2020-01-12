@@ -2,7 +2,7 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.common.io;
+package space.nature.common.core.io;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

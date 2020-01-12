@@ -21,17 +21,21 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private UserFactory userFactory;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, UserFactory userFactory) {
+        this.userRepository = userRepository;
+        this.userFactory = userFactory;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            return User.builder().build();
+            throw new UsernameNotFoundException("用户不存在");
         }
         return user;
     }

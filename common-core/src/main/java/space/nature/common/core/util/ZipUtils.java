@@ -2,7 +2,7 @@
  * Copyright (c) 2019, LZx
  */
 
-package space.nature.common.util;
+package space.nature.common.core.util;
 
 import java.io.*;
 import java.nio.file.FileSystemException;

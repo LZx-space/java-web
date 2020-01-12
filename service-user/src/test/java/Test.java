@@ -3,7 +3,7 @@
  */
 
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import space.nature.common.util.HttpSyncClient;
+import space.nature.common.core.util.HttpSyncClient;
 
 import java.io.File;
 import java.io.IOException;

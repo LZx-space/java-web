@@ -21,12 +21,15 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/{id}")
-    public Response<Void> find(@PathVariable("id") Long id) {
-        userService.listAll();
+    public Response<Void> findById(@PathVariable("id") Long id) {
         return ResponseFactory.success();
     }
 

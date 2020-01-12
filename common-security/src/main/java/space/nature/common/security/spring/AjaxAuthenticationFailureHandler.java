@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import space.nature.common.core.dto.ResponseFactory;
 import space.nature.common.core.dto.ResponseStatusEnum;
-import space.nature.common.util.JsonUtils;
+import space.nature.common.core.util.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

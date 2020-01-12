@@ -6,9 +6,9 @@ package space.nature.web;
 
 import com.jcraft.jsch.Session;
 import lombok.Data;
-import space.nature.common.util.JaxbUtils;
-import space.nature.common.util.SftpUtils;
-import space.nature.common.util.ZipUtils;
+import space.nature.common.core.util.JaxbUtils;
+import space.nature.common.core.util.SftpUtils;
+import space.nature.common.core.util.ZipUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
