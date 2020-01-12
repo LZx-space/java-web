@@ -17,12 +17,20 @@ public class SmsManager {
 
     private ThreadLocalRandom random = ThreadLocalRandom.current();
 
-    private static final String SMS_CACHE_NAME_PRFIX = "SMS:cache:";
+    private static final String SMS_CACHE_NAME_PREFIX = "SMS:";
 
     private static final int CODE_CACHE_TTL = 2;
 
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    /**
+     * 构造函数
+     *
+     * @param redisTemplate redis模板
+     */
+    public SmsManager(@Autowired RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * 发送短信验证码
@@ -35,7 +43,7 @@ public class SmsManager {
         String code = createCode();
         // TODO Send Message Code
         String[] pair = {mobileNo, code};
-        redisTemplate.opsForValue().set(SMS_CACHE_NAME_PRFIX + storageKey, pair, CODE_CACHE_TTL, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(SMS_CACHE_NAME_PREFIX + storageKey, pair, CODE_CACHE_TTL, TimeUnit.MINUTES);
         return storageKey;
     }
 
