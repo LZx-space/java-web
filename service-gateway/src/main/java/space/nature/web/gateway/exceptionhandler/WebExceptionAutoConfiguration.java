@@ -20,6 +20,11 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 
 import java.util.stream.Collectors;
 
+/**
+ * 网关异常处理自动配置
+ *
+ * @author LZx
+ */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass(WebFluxConfigurer.class)
@@ -33,6 +38,16 @@ public class WebExceptionAutoConfiguration {
         this.serverProperties = serverProperties;
     }
 
+    /**
+     * order(-1)查看{@link ErrorWebFluxAutoConfiguration}
+     *
+     * @param errorAttributes
+     * @param resourceProperties
+     * @param viewResolvers
+     * @param serverCodecConfigurer
+     * @param applicationContext
+     * @return
+     */
     @Bean
     @Order(-1)
     public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes,

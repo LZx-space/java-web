@@ -2,10 +2,31 @@ server:
   port: 8080
   error:
     include-exception: true
+    # 异常时是否打印错误栈信息
     include-stacktrace: never
 spring:
   application:
-    name: ROOT
+    name: service-gateway
+  cloud:
+    gateway:
+      # 路由设置
+      routes:
+        - id: users_rewrite
+          uri: http://localhost:8081
+          predicates:
+            - Path=/users/**
+        - id: blogs_rewrite
+          uri: http://localhost:8082
+          predicates:
+            - Path=/blogs/**i
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    org.springframework.security: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG
 
 
 

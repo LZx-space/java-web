@@ -8,6 +8,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.reactive.function.server.RequestPredicate;
 
 /**
+ * @author LZx
+ * <p>
  * 重写{@link #acceptsTextHtml()}让{@link #getRoutingFunction(ErrorAttributes)}使用默认可选的HTML或者JSON格式
  * 数据中的JSON格式的返回数据
  */
