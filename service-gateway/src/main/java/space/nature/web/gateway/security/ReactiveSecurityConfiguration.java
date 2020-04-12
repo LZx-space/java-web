@@ -17,6 +17,7 @@ public class ReactiveSecurityConfiguration {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http.authorizeExchange()
+                .pathMatchers(HttpMethod.POST, "/users").permitAll()
                 .pathMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyExchange().authenticated()
                 .and().csrf().disable()

@@ -1,11 +1,7 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.domain.user;
 
 import org.apache.ibatis.annotations.Mapper;
-import space.nature.common.core.domain.Repository;
+import org.nature.core.domain.Repository;
 
 /**
  * 用户持久层数据接入接口

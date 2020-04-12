@@ -1,24 +1,26 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.ui.web;
 
 import lombok.extern.slf4j.Slf4j;
+import org.nature.core.dto.Response;
+import org.nature.core.dto.ResponseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import space.nature.common.core.dto.Response;
-import space.nature.common.core.dto.ResponseFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import space.nature.web.user.application.UserService;
 import space.nature.web.user.domain.user.User;
+import space.nature.web.user.ui.web.dto.RegisterDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * @author LZx
+ */
 @RestController
 @Slf4j
+@RequestMapping("/users")
 public class UserController {
 
     private UserService userService;
@@ -29,20 +31,25 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Response<Void> findById(@PathVariable("id") Long id) {
+    public Response<Void> findById(@PathVariable("id") String id) {
+        System.out.println("-1->\t" + id);
         return ResponseFactory.success();
     }
 
     @GetMapping
     public Response<List<User>> listAll() {
-        System.out.println("------------------");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("------------------" + authentication.getName());
         List<User> users = userService.listAll();
         return ResponseFactory.success(users);
     }
 
     @PostMapping
-    public Response<Void> register(String username, String password) {
-        userService.register(username, password);
+    public Response<Void> register(@Valid RegisterDto reg, BindingResult bindingResult) {
+        bindingResult.getFieldErrors().forEach(e -> {
+            System.out.println(e.getField() + ":\t" + e.getDefaultMessage());
+        });
+        userService.register(reg.getUsername(), reg.getPassword());
         return ResponseFactory.success();
     }
 

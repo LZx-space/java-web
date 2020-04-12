@@ -4,7 +4,11 @@ server:
     include-exception: true
     # 异常时是否打印错误栈信息
     include-stacktrace: never
+  http2:
+    enabled: true
 spring:
+  profiles:
+    active: dev
   application:
     name: service-gateway
   cloud:
@@ -19,6 +23,13 @@ spring:
           uri: http://localhost:8082
           predicates:
             - Path=/blogs/**i
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+  session:
+    store-type: redis
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

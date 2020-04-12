@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.application;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +5,9 @@ import space.nature.web.user.domain.user.User;
 
 import java.util.List;
 
+/**
+ * @author LZx
+ */
 public interface UserService extends UserDetailsService {
 
     /**

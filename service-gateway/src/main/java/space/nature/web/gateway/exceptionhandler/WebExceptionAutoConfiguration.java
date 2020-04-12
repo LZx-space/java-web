@@ -41,12 +41,12 @@ public class WebExceptionAutoConfiguration {
     /**
      * order(-1)查看{@link ErrorWebFluxAutoConfiguration}
      *
-     * @param errorAttributes
-     * @param resourceProperties
-     * @param viewResolvers
-     * @param serverCodecConfigurer
-     * @param applicationContext
-     * @return
+     * @param errorAttributes       the error attributes
+     * @param resourceProperties    the resources configuration properties
+     * @param viewResolvers         视图解析器： 视图名 -> 页面字符
+     * @param serverCodecConfigurer codecs config for HTTP message reader and writer
+     * @param applicationContext    the current application context
+     * @return Web请求的异常处理器
      */
     @Bean
     @Order(-1)
@@ -61,6 +61,9 @@ public class WebExceptionAutoConfiguration {
         return exceptionHandler;
     }
 
+    /**
+     * @return 自定义的异常属性提供对象
+     */
     @Bean
     public ErrorAttributes errorAttributes() {
         return new CustomErrorAttributes(this.serverProperties.getError().isIncludeException());

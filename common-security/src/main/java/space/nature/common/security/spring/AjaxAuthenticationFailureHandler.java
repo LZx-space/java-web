@@ -1,15 +1,11 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.common.security.spring;
 
 import lombok.extern.slf4j.Slf4j;
+import org.nature.core.dto.ResponseFactory;
+import org.nature.core.dto.ResponseStatusEnum;
+import org.nature.core.util.JsonUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import space.nature.common.core.dto.ResponseFactory;
-import space.nature.common.core.dto.ResponseStatusEnum;
-import space.nature.common.core.util.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

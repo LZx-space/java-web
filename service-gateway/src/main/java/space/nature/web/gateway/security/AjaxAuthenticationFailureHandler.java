@@ -2,16 +2,18 @@ package space.nature.web.gateway.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.nature.core.dto.ResponseFactory;
+import org.nature.core.dto.ResponseStatusEnum;
+import org.nature.core.util.JsonUtils;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
 import reactor.core.publisher.Mono;
-import space.nature.common.core.dto.ResponseFactory;
-import space.nature.common.core.dto.ResponseStatusEnum;
-import space.nature.common.core.util.JsonUtils;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author LZx
@@ -29,10 +31,11 @@ public class AjaxAuthenticationFailureHandler implements ServerAuthenticationFai
         response.setStatusCode(HttpStatus.OK);
         String write;
         try {
-            write = JsonUtils.write(ResponseFactory.success(ResponseStatusEnum.FAIL));
+            write = JsonUtils.write(ResponseFactory.create(ResponseStatusEnum.FAIL));
         } catch (JsonProcessingException e) {
             return Mono.error(e);
         }
-        return response.writeAndFlushWith(Mono.just(new DefaultDataBufferFactory().wrap(write.getBytes())).map(Mono::just));
+        DataBuffer dataBuffer = response.bufferFactory().wrap(write.getBytes(StandardCharsets.UTF_8));
+        return response.writeAndFlushWith(Mono.just(dataBuffer).map(Mono::just));
     }
 }

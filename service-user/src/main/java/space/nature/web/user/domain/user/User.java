@@ -1,26 +1,22 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.nature.core.domain.AggregateRoot;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import space.nature.common.core.domain.AggregateRoot;
 import space.nature.web.user.domain.user.valueobject.UserStateEnum;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
+ * @author LZx
  * 系统用户类
  */
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -52,13 +48,18 @@ public class User implements UserDetails, AggregateRoot<User, Long> {
     }
 
     @Override
+    public Long identity() {
+        return null;
+    }
+
+    @Override
     public boolean sameIdentityAs(User other) {
         return this.id.equals(other.id);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

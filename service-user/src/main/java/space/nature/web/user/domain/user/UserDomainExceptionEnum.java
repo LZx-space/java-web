@@ -1,15 +1,14 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.domain.user;
 
 
-import space.nature.common.core.ResponseStatus;
+import org.nature.core.ResponseStatus;
 
+/**
+ * @author LZx
+ */
 public enum UserDomainExceptionEnum implements ResponseStatus {
 
-    LOGIN_ID_REGISTERED(100, "该ID已注册");
+    USERNAME_REGISTERED(100, "该用户名已使用");
 
     private int code;
 

@@ -1,31 +1,26 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.domain.user;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author LZx
+ */
 @Component
 public class UserFactory {
 
-    @Autowired
-    @Lazy
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     /**
      * 创建用户
      *
-     * @param loginId  用户登录的标识
-     * @param password 用户设置的密码
+     * @param username 用户名
+     * @param password 密码
      * @return
      */
-    public User create(String loginId, String password) {
-        return User.builder().username(loginId).password(passwordEncoder.encode(password)).build();
+    public User createWithUsername(String username, String password) {
+        return User.builder().username(username).password(passwordEncoder.encode(password)).build();
     }
 
 }

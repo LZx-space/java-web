@@ -1,15 +1,11 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.application.impl;
 
+import org.nature.core.exception.AppExceptionThrower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import space.nature.common.core.exception.AppExceptionThrower;
 import space.nature.web.user.application.UserService;
 import space.nature.web.user.domain.user.User;
 import space.nature.web.user.domain.user.UserDomainExceptionEnum;
@@ -18,6 +14,9 @@ import space.nature.web.user.domain.user.UserRepository;
 
 import java.util.List;
 
+/**
+ * @author LZx
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -44,9 +43,9 @@ public class UserServiceImpl implements UserService {
     public void register(String username, String password) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
-            AppExceptionThrower.runtimeException(UserDomainExceptionEnum.LOGIN_ID_REGISTERED);
+            AppExceptionThrower.runtimeException(UserDomainExceptionEnum.USERNAME_REGISTERED);
         }
-        User newUser = userFactory.create(username, password);
+        User newUser = userFactory.createWithUsername(username, password);
         userRepository.insert(newUser);
     }
 

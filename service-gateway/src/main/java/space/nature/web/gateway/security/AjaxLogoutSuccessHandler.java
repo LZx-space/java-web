@@ -2,15 +2,17 @@ package space.nature.web.gateway.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.nature.core.dto.ResponseFactory;
+import org.nature.core.util.JsonUtils;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import reactor.core.publisher.Mono;
-import space.nature.common.core.dto.ResponseFactory;
-import space.nature.common.core.util.JsonUtils;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author LZx
@@ -32,6 +34,7 @@ public class AjaxLogoutSuccessHandler implements ServerLogoutSuccessHandler {
         } catch (JsonProcessingException e) {
             return Mono.error(e);
         }
-        return response.writeAndFlushWith(Mono.just(new DefaultDataBufferFactory().wrap(write.getBytes())).map(Mono::just));
+        DataBuffer dataBuffer = response.bufferFactory().wrap(write.getBytes(StandardCharsets.UTF_8));
+        return response.writeAndFlushWith(Mono.just(dataBuffer).map(Mono::just));
     }
 }

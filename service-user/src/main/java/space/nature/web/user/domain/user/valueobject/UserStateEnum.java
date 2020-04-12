@@ -20,6 +20,7 @@ public enum UserStateEnum implements ValueObject<UserStateEnum> {
      */
     CLOSE;
 
+    @Override
     public boolean sameValueAs(UserStateEnum other) {
         return this.equals(other);
     }

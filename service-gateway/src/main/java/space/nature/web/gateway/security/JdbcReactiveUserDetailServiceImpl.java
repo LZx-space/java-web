@@ -3,9 +3,10 @@ package space.nature.web.gateway.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import reactor.core.publisher.Mono;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -13,13 +14,7 @@ import java.util.Collections;
  * @author LZx
  * @date 2020/2/7
  */
-public class JdbcReactiveUserDetailService implements ReactiveUserDetailsService {
-
-    private PasswordEncoder passwordEncoder;
-
-    public JdbcReactiveUserDetailService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+public class JdbcReactiveUserDetailServiceImpl implements ReactiveUserDetailsService, Serializable {
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
@@ -31,7 +26,7 @@ public class JdbcReactiveUserDetailService implements ReactiveUserDetailsService
 
             @Override
             public String getPassword() {
-                return passwordEncoder.encode("123456");
+                return "{bcrypt}" + new BCryptPasswordEncoder().encode("123456");
             }
 
             @Override

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.ui.web;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +11,8 @@ import space.nature.common.core.exception.AppRuntimeException;
 
 /**
  * 异常处理控制器
+ *
+ * @author LZx
  */
 @RestControllerAdvice
 @Slf4j
@@ -27,7 +25,7 @@ public class ExceptionController {
      * @return 响应DTO
      */
     @ExceptionHandler(AppRuntimeException.class)
-    public Response<Void> handleAppRuntimeException(AppRuntimeException e) {
+    public Response handleAppRuntimeException(AppRuntimeException e) {
         return ResponseFactory.create(e);
     }
 
@@ -38,7 +36,7 @@ public class ExceptionController {
      * @return 响应DTO
      */
     @ExceptionHandler(AppCheckedException.class)
-    public Response<Void> handleAppCheckedException(AppCheckedException e) {
+    public Response handleAppCheckedException(AppCheckedException e) {
         return ResponseFactory.create(e);
     }
 
@@ -49,7 +47,7 @@ public class ExceptionController {
      * @return 响应DTO
      */
     @ExceptionHandler(Exception.class)
-    public Response<Void> handleSystemException(Exception e) {
+    public Response handleSystemException(Exception e) {
         log.error("应用发生未处理异常：" + e.getMessage(), e);
         return ResponseFactory.create(ResponseStatusEnum.ERROR);
     }

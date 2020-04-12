@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.common.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class SmsManager {
+public class SMSManager {
 
     private ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -28,7 +24,7 @@ public class SmsManager {
      *
      * @param redisTemplate redis模板
      */
-    public SmsManager(@Autowired RedisTemplate<String, Object> redisTemplate) {
+    public SMSManager(@Autowired RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
