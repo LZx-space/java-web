@@ -49,7 +49,7 @@ public class User implements UserDetails, AggregateRoot<User, Long> {
 
     @Override
     public Long identity() {
-        return null;
+        return id;
     }
 
     @Override

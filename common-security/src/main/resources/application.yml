@@ -1,5 +1,0 @@
-spring:
-  security:
-    loginPageUrl: /login
-    jwt:
-      timeout: 2

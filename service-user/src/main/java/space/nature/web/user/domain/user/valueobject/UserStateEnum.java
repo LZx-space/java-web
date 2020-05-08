@@ -1,10 +1,6 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.domain.user.valueobject;
 
-import space.nature.common.core.domain.ValueObject;
+import org.nature.core.domain.ValueObject;
 
 public enum UserStateEnum implements ValueObject<UserStateEnum> {
     /**
@@ -23,6 +19,11 @@ public enum UserStateEnum implements ValueObject<UserStateEnum> {
     @Override
     public boolean sameValueAs(UserStateEnum other) {
         return this.equals(other);
+    }
+
+    @Override
+    public UserStateEnum copy() {
+        return this;
     }
 
 }

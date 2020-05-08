@@ -1,13 +1,9 @@
-/*
- * Copyright (c) 2019, LZx
- */
-
 package space.nature.web.user.domain.role;
 
+import org.nature.core.domain.AggregateRoot;
 import org.springframework.security.core.GrantedAuthority;
-import space.nature.common.core.domain.AggregateRoot;
 
-public class Role implements AggregateRoot, GrantedAuthority {
+public class Role implements AggregateRoot<Role, String>, GrantedAuthority {
 
     @Override
     public String getAuthority() {
@@ -15,7 +11,12 @@ public class Role implements AggregateRoot, GrantedAuthority {
     }
 
     @Override
-    public boolean sameIdentityAs(Object other) {
+    public String identity() {
+        return null;
+    }
+
+    @Override
+    public boolean sameIdentityAs(Role other) {
         return false;
     }
 }

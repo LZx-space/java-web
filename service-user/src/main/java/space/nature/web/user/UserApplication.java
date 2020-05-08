@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableCaching
 @MapperScan("space.nature.web.domain")
-@Import(space.nature.common.security.spring.SecurityAutoConfiguration.class)
+@Import(org.nature.security.spring.SecurityAutoConfiguration.class)
 public class UserApplication {
 
     public static void main(String[] args) {
